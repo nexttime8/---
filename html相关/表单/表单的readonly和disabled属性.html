@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- disabled适用于所有表单元素，禁用，不能输入、勾选、选择；外观改变；不提交，不验证；外观灰色 -->
+    <!-- readonly仅适用于 <input type="text">, <textarea> 等可编辑的表单元素；只读，不能编辑，可以复制、选择；外观不变；会提交表单数据，参与表单验证 -->
+    <form>
+        <input id="input1" type="text">
+        <input id="input2" type="text" disabled>
+        <input id="input3" type="text">
+        <input id="input4" type="text">
+        <button id="btn1">禁用第三个input框 失败</button>
+        <button id="btn2" type="button">禁用第四个input框 成功</button>
+    </form>
+    <script>
+        // button点击会导致页面刷新，禁用功能没有实现
+        const btn1 = document.getElementById('btn1')
+        btn1.onclick = function (e) {
+            document.getElementById('input3').setAttribute('disabled', true)
+        }
+        const btn2 = document.getElementById('btn2')
+        btn2.onclick = function (e) {
+            document.getElementById('input4').disabled = true
+        }
+        setTimeout(() => {
+            btn2.setAttribute('disabled', true)
+            // 这样是有用的
+        }, 5000);
+        // <button> 元素默认的 type 属性是 "submit"，而没有指定 type="button"，所以按钮会触发表单的提交行为，导致页面刷新
+
+
+
+    </script>
+</body>
+
+</html>

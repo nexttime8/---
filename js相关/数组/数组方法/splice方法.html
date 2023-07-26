@@ -10,6 +10,7 @@
 <body>
     <script>
         // ——————————————————————Array.prototype.splice——————————————————
+        // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
 
         let arr = [1, 2, 3]
 
@@ -19,6 +20,11 @@
         // [0,1)之间没有元素，截取得到空数组，元素组未被更改
         arr = [1, 2, 3]
         console.log(arr.splice(0, 1), arr) // [] [1,2,3]
+
+        // 没有截取元素，插入了一个元素
+        arr = [1, 2, 3, 4, 5];
+        console.log(arr.splice(2, 0, 6, 7), arr); // [] [1, 2, 6, 7, 3, 4, 5]
+
 
         // 截取了前两个元素，并在0位置开始插入'a','b'
         arr = [1, 2, 3]

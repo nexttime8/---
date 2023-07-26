@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 不怎么用到，但是有时候看到了又不懂，所以总结一下
+        const person = { name: 'John', age: 30 };
+
+        console.log('This is a log message.');
+        console.error('This is an error message.');// red
+        console.warn('This is a warning message.');// yellow
+        console.info('This is an info message.');
+        console.debug('This is a debug message.');// 没显示
+
+        console.table(person); // 既以表格输出，又输出对象本身
+        console.dir(person);
+
+        // console.clear();
+
+        console.time('myTimer');// 开启计时器
+        for (let i = 0; i < 1000000; i++) {
+            // some code here
+            i += 2
+        }
+        console.timeEnd('myTimer'); // 结束计时器
+
+        console.group('My Group');// 成组输出
+        console.log('Group message 1');
+        console.log('Group message 2');
+        console.groupEnd();
+
+        console.count('counter'); // 计数，特定标签调用次数
+        console.count('counter');
+        console.count('counter');
+
+        console.assert(1 === 2, 'Assertion failed'); /* 报错 */
+
+        console.trace();/* 当前调用栈信息 */
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="outer">
+        <div id="inner">
+            <button id="btn">
+                Click me!
+            </button>
+        </div>
+    </div>
+    <script>
+
+        // w3c https://www.w3.org/TR/DOM-Level-3-Events/#dom-event-architecture
+        
+        // 事件传播的三个阶段
+        const outer = document.getElementById('outer');
+        const inner = document.getElementById('inner');
+        const btn = document.getElementById('btn');
+
+        // 添加事件处理函数，演示事件捕获阶段
+        inner.addEventListener('click', function (event) {
+            console.log('Capturing Phase: Inner Div Clicked');
+        }, true);
+
+        outer.addEventListener('click', function (event) {
+            console.log('Capturing Phase: Outer Div Clicked');
+        }, true); // addEventListener的第三个参数为true指定事件捕获
+
+        // 添加事件处理函数，演示事件处理阶段
+        btn.addEventListener('click', function (event) {
+            console.log('Event Handling: Button Clicked');
+        });
+
+        // 添加事件处理函数，演示事件冒泡阶段
+        outer.addEventListener('click', function (event) {
+            console.log('Bubbling Phase: Outer Div Clicked');
+        }); // 默认false，事件冒泡
+
+        inner.addEventListener('click', function (event) {
+            console.log('Bubbling Phase: Inner Div Clicked');
+        });
+
+        // 事件首先在捕获阶段从外向内传播，然后在目标元素上触发事件处理函数，最后在冒泡阶段从内向外传播。这就是事件传播的整个过程。
+    </script>
+</body>
+
+</html>
