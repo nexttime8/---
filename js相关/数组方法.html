@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // ——————————————————————Array.prototype.splice——————————————————
+
+        let arr = [1, 2, 3]
+
+        // 1个参数，从索引为1开始截取，原数组被改变
+        console.log(arr.splice(1), arr) // [2,3] [1]
+
+        // [0,1)之间没有元素，截取得到空数组，元素组未被更改
+        arr = [1, 2, 3]
+        console.log(arr.splice(0, 1), arr) // [] [1,2,3]
+
+        // 截取了前两个元素，并在0位置开始插入'a','b'
+        arr = [1, 2, 3]
+        console.log(arr.splice(0, 2, 'a', 'b'), arr) // [1,2] ['a','b',3]
+
+        // 截取了后两个元素，并在1位置开始插入'a','b'
+        arr = [1, 2, 3]
+        console.log(arr.splice(1, 3, 'a', 'b'), arr) // [2,3] [1,'a','b']
+
+        // 【这种方式是错误的但是不报错】
+        arr = [1, 2, 3]
+        console.log(arr.splice(1, 'a', 'b'), arr) // [] [1,'b',2,3]
+
+    </script>
+</body>
+
+</html>
