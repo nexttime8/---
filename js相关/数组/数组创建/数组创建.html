@@ -9,7 +9,7 @@
 
 <body>
     <script>
-        // 创建数组可以有4种方法：字面量，Array方法（可以没有new），from方法，of方法
+        // ————————————————————创建数组可以有4种方法：字面量，Array方法（可以没有new），from方法，of方法
         // ———————————————————— 字面量
         const arr1 = [1, 2, 3, 4, 5];
 
@@ -21,16 +21,48 @@
 
         // ———————————————————— Array.from() 很多例子：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/from
         // Array.from() 绝不会创建稀疏数组。如果 arrayLike 对象缺少一些索引属性，那么这些属性在新数组中将是 undefined。
-        // 可以实现map函数效果
+        // ————————————————————可以实现map函数效果
         // 第一个参数可以是可迭代对象（map、set对象、NodeList、arguments）、类数组对象
         const arr3 = Array.from('hello'); // 将字符串转为字符数组 ['h', 'e', 'l', 'l', 'o']
         const arr4 = Array.from([1, 2, 3], x => x * 2); // 使用映射函数创建新数组 [2, 4, 6]
         console.log(Array.from({ length: 5 }, (v, i) => i))
         // *******[0, 1, 2, 3, 4] 这样指定数组长度！如果后面没有map函数，会是五个undefined
+        // ————————————————————序列生成器
+        const range = (start, stop, step) =>
+            Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step);
+        console.log(range(2, 100, 3))
+        console.log(range("A".charCodeAt(0), "Z".charCodeAt(0), 1).map((x) =>
+            String.fromCharCode(x),
+        ))
 
-        // ———————————————————— 
+        // ****************第二个参数作为Array.from的参数传入，将this改为NotArray，只要这个this能够接受一个表示数组长度的单个参数
+        function NotArray(len) {
+            console.log("NotArray called with length", len);
+        }
+        console.log(Array.from.call(NotArray, new Set(["foo", "bar", "baz"])));
+        // NotArray called with length undefined
+        // NotArray { '0': 'foo', '1': 'bar', '2': 'baz', length: 3 }
+        console.log(Array.from.call(NotArray, { length: 1, 0: "foo" }));
+        // NotArray called with length 1
+        // NotArray { '0': 'foo', length: 1 }
+
+
+
+        // ———————————————————— Array.of()
+        // 是一个“工厂方法”
+        // 和上面不同，这里直接以一个个元素传入
         const d = 'a'
         console.log(Array.of(1, 2, d, 4, 5)); // 创建包含传入参数的数组 [1, 2, 3, 4, 5]
+        function NotArray(len) {
+            console.log("NotArray called with length", len);
+        }
+        console.log(Array.of.call(NotArray, 1, 2, 3));
+        console.log(Array.of.call(NotArray, [1, 2, 3]));
+        // NotArray called with length 3
+        // NotArray { '0': 1, '1': 2, '2': 3, length: 3 }
+        // NotArray {0: [1, 2, 3], length: 1}
+        console.log(Array.of.call(Object)); // [Number: 0] { length: 0 }
+
 
         const arr7 = [a, b, c] = [1, 2, 3]; // 创建数组并同时解构赋值 [a, b, c] = [1, 2, 3]
 
