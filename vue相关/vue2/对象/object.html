@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        /* 对象属性
+        1. enumertable属性：是否可以通过for...in和Object.keys()枚举
+        2. configurable属性：是否可以被修改和删除，且可以修改它的enumertable属性、configurable属性和writable属性
+        3. writable属性：是否可以被赋值修改，不报错
+        */
+        const obj = {
+            name: "John",
+            age: 30,
+        };
+
+        Object.defineProperty(obj, "name", {
+            enumerable: false, // 不可枚举
+            configurable: false, // 不可配置
+        });
+
+        // name 属性不可枚举，不会出现在 for...in 循环或 Object.keys() 结果中
+        for (let key in obj) {
+            console.log(key); // 只会输出 "age"
+        }
+
+        // 无法删除或修改 name 属性
+        delete obj.name; // 无效操作 不报错
+        obj.name = "Alice"; // 无效操作 不报错
+
+        // 重新定义 name 属性为可枚举和可配置 报错
+        Object.defineProperty(obj, "name", {
+            enumerable: true,
+            configurable: true,
+        });
+
+        // 现在可以删除或修改 name 属性
+        delete obj.name; // 删除成功
+        obj.name = "Alice"; // 修改成功
+
+    </script>
+</body>
+
+</html>
