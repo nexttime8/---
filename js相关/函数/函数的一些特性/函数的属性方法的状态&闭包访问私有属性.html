@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 函数可以访问静态的属性和方法;函数实例可以通过闭包等方法访问私有属性和方法,可以直接访问this声明的实例属性和方法 */
+
+        function Foo(name) {
+            /* 函数里面直接定义的,既是私有的 */
+            let age = 25              // 私有属性
+            function sex() {          // 私有方法
+                console.log('male')
+            }
+            /* 函数的私有属性和方法在函数体外部是不能直接通过属性访问符. 访问的，如果要访问，可以使用闭包 */
+
+            /* 通过闭包读写私有属性和方法 */
+            this.getAge = function () {
+                return age
+            }
+            this.setAge = function (value) {
+                return age = value
+            }
+            this.setAge2 = function (age) {
+                return age = age
+            }
+            this.getSex = function () {
+                sex()
+            }
+
+            /* 通过this定义的,就是实例的 */
+            this.name = name          // 实例属性
+            this.run = function () {   // 实例方法
+                console.log('调用实例方法run')
+                return true
+            }
+        }
+
+        /* 函数后面通过.添加的,就是静态的 */
+        Foo.home = '静态属性Beijing'        // 静态属性
+        Foo.talk = function () {     // 静态方法
+            console.log('调用静态方法talk')
+        }
+
+        /* 函数通过prototype添加的,就是原型的 */
+        Foo.prototype.height = 180        // 原型属性
+        Foo.prototype.swim = function () { // 原型方法
+            console.log('swim')
+            return true
+        }
+
+        /* 函数的静态属性和方法可以在函数体外部直接访问 */
+        console.log('函数体外部直接访问静态属性', Foo.home)
+        console.log('函数体外部直接访问静态方法如下'); Foo.talk()
+
+        // 尝试使用
+        // 私有的
+        let person = new Foo('per')
+        console.log(person.getAge())
+        console.log(person.setAge(30))
+        console.log(person.setAge2(30))
+        // person.sex() // Uncaught TypeError: person.sex is not a function
+        person.getSex()
+        // 实例的
+        new Foo('李顺').run() // 直接new实例,然后调用
+        let newFoo = new Foo('李顺')
+        newFoo.run() // 创建new实例,赋值给变量,然后调用
+        console.log(newFoo.name)
+
+        /* 类名可以访问static声明的静态属性和方法,可以prototype访问直接定义的方法(在原型上);类实例可以直接访问this声明的实例属性和方法,可以直接访问直接声明的属性(实例属性),可以直接访问直接定义的方法(向上找到原型上) */
+        class Foo2 {
+            /* class里面通过构造函数定义的,就是实例的 */
+            constructor(name) {
+                this.name = name;         // 实例属性
+                this.run = function () {   // 实例方法
+                    console.log('run')
+                }
+            }
+            /* class里面通过static定义的,就是静态的 */
+            static home = 'Beijing';        // 静态属性
+            static talk() {                // 静态方法
+                console.log('talk')
+            }
+            /* class里面直接定义的属性,就是实例的 */
+            id = '78979';                  // 实例属性，注意！！
+            /* class里面直接定义的方法,就是原型的 */
+            swim() {                       // 原型方法 Foo2.prototype.swim
+                console.log('swim')
+            }
+        }
+        console.log(new Foo2('t'))
+        let person2 = new Foo2('一个名字')
+
+        /* 当访问实例的属性和方法时，如果实例上找不到，会通过原型委托到函数的原型上。但是，当直接访问函数的静态属性和方法时，如果找不到，不会去函数的原型上查找 */
+
+
+        // -------------------------------------------- 函数的length属性，不包括 rest 参数[函数的lenght属性?]
+        console.log((function (...a) { }).length)
+        console.log((function (a, ...b) { }).length)
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 
+        匿名函数
+        1. this指向window
+        2. 具有prototype
+        3. this指向可以被call/apply/bind改变
+        */
+        (function (i) {
+            console.log('这是立即调用匿名函数', i)
+        })(2)
+    </script>
+</body>
+
+</html>

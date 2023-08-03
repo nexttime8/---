@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>利用闭包实现公共方法，访问位于包含作用域中定义的变量和方法</title>
+</head>
+
+<body>
+    <script>
+        //1.构造函数：通过在构造函数内部定义特权方法（形成闭包）来实现访问私有变量
+        function Person(name) {
+            let privateAge = 10;
+            this.getName = function () { /* 这些都是闭包,无论是访问函数内的私有属性还是实例传入的参数 */
+                return name;
+            }
+            this.setName = function (value) {
+                return name = value;
+            }
+            this.getAge = function () {
+                return privateAge
+            }
+        }
+        let person = new Person('Vita');
+        console.log(person.getName());//Vita
+        console.log(person.setName('Jungle'));
+        console.log(person.getName());//Jungle
+        console.log(person.getAge()); // 立即调用函数前面必须要有分号
+
+        // 2.原型模式:
+        //使用立即执行函数创造私有化作用域
+        (function () {
+            let name = '';
+            //不使用关键字调用，非严格模式下相当于创建全局的变量，则在外部就可以调用，严格模式下不允许给为声明的变量赋值
+            Person = function (value) {
+                name = value;
+            }
+            Person.prototype.getName = function () {
+                return name;
+            }
+            Person.prototype.setName = function (value) {
+                return name = value;
+            }
+
+        })();
+        let person1 = new Person('Vita');
+        let person2 = new Person('Jungle'); /* 这里导致name二次覆盖 */
+        console.log(person1.getName());//Jungle
+        console.log(person2.getName());//Jungle
+        console.log(person1.name) /* undefined, name是立即执行函数的私有作用域内,不在person实例身上*/
+        console.log(Person.prototype.name) /* undefined, 同理,不在原型对象上*/
+
+
+        // 3.模块模式
+        //可以通过对象字面量和new的方式创建对象，而通过对象字面量的方式创建的对象也可叫做单例对象（只有一个实例的对象）
+        //模块模式：在单例的对象基础上加以扩展，通过[作用域链来关联私有变量和特权方法]
+        //通过一个匿名函数返回一个单例对象，在单例对象中的方法中可以访问私有变量和函数
+        let singleton = function () {
+            //私有变量和方法
+            let privateVariable = 10;
+            function privateFun() { return false }
+            //特权/公有属性和方法
+            return {
+                // publicProperty: true,
+                publicMethod() { // 等价于 publicMethod: function(){
+                    privateVariable++;
+                    return privateFun();
+                }
+            }
+        }
+        /* singleton是一个函数,通过调用返回一个对象,再获取多项的publicMethod属性 */
+        console.log(singleton().publicMethod());//false
+        /* singleton 就像一个工厂函数，每次被调用时都会生成一个新的对象。要得到一个单例对象，您需要将 singleton 作为一个立即调用的函数表达式（IIFE） */
+
+
+        // 4.模块增强模式
+        //这个适合单例对象需要时某个特定类型的实例，但又必须给它添加额外属性或方法的场景
+        let singleton2 = function () {
+            //私有变量和方法
+            let privateVariable = 10;
+            function privateFun() { return false }
+
+            //定义特定的对象
+            let object = new CustomType();
+            //添加特权/公有属性和方法
+            object.publicProperty = true;
+
+            object.publicMethod = function () {
+                privateVariable++;
+                return privateFun();
+            }
+            return object;
+        }
+        // singleton2.publicMethod();//false
+
+
+
+    </script>
+</body>
+
+</html>

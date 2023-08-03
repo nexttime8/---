@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 1.直接声明
+        function f() {
+            console.log("这是直接声明的")
+        }
+        //函数调用
+        f();
+        //2.函数表达式声明
+        var test = function () {
+            console.log("这是函数表达式声明")
+        }
+        // 函数调用
+        test();
+        //3.构造函数声明
+        var test = new Function('name', 'alert("hello,"+name)');
+        //第一个参数是函数参数,第二个参数是函数体
+        //函数调用
+        test('world');
+    </script>
+</body>
+
+</html>

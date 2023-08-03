@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 这样 singleton 就像一个工厂函数，每次被调用时都会生成一个新的对象。要得到一个单例对象，您需要将 singleton 作为一个立即调用的函数表达式（IIFE） */
+        let singleton = (function () {
+            //私有变量和方法
+            let privateVariable = 10;
+            function privateFun() { return false }
+            //特权/公有属性和方法
+            return {
+                publicProperty: true,
+                publicMethod: function () {
+                    privateVariable++;
+                    return privateFun();
+                }
+            }
+        })();
+
+        console.log(singleton.publicMethod()); // false
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 
+        构造函数
+        1. 习惯上首字母大写
+        2. 使用new关键字进行调用
+        3. 构造函数用来新建实例对象
+        4. 内部用this来构造属性和方法
+        4. 构造函数在被调用之后会马上创建一个新对象，并将该对象作为返回值返回
+        6. 具有prototype
+        */
+
+        /* 这不是构造函数,这只是构造函数声明;不推荐使用,因为需要将字符串动态解析成代码,容易引发安全和效率问题 */
+        var test = new Function('name', 'alert("hello,"+name)');
+
+        function Person(name, job, age) {
+            this.name = name;
+            this.job = job;
+            this.age = age;
+            this.sayHi = function () {
+                alert("Hi")
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
