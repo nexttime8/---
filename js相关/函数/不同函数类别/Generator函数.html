@@ -12,23 +12,58 @@
         /* 
         Generator函数
         1.function命令和函数名之间有一个星号*
-        2.函数体内部使用yield定义不同的状态。
+        2.函数体内部使用yield定义不同的状态。[除了return语句，还可以用yield返回多次]
         3.调用后函数并不执行，返回的也不是函数的运行结果，而是一个指向内部状态的指针对象
         4.可以理解成一个状态机，封装了多个内部的状态。执行函数会返回一个遍历器对象，可以依次遍历函数内部的每个状态
         */
-        function* gen(x) {
+
+        /* ------------------------------------------------ */
+        function* gen2(x) {
             console.log('x=' + x)
             var y = yield x + 2;
 
             return y;
         }
         //调用Generator 函数
-        let g = gen(1);
+        let g = gen2(1);
 
         // g.next();
         // x=1
         // {value: 3, done: false}
 
+        /* ------------------------------------------------ */
+
+
+        function* gen() {
+
+            yield 'hello';
+
+            yield* 'hello';
+
+        }
+
+        let f = gen();
+
+
+        /* ------------------------------------------------ */
+
+        function* fib(max) {
+            var a = 0,
+                b = 1,
+                n = 0;
+            while (n < max) {
+                yield a;
+                [a, b] = [b, a + b];
+                n++;
+            }
+            return;
+        }
+        /* 可以获取fib(x)后,通过next()调用,一次次执行获取yield的返回值;或者通过for...of循环迭代generator对象 */
+
+
+
+        /* 优点一:generator可以在执行过程中多次返回,实现需要用面向对象才能实现的功能 */
+        /* 优点二:把异步回调代码变成类似同步的代码(解决回调地狱) */
 
     </script>
 </body>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* concat方法---可以和push方法进行比较;实现浅拷贝
+        不修改原数组,生成新的数组
+        传入参数:0-n个数组
+        返回值:新的数组
+        */
+
+        const fruits = ['西瓜', '葡萄', '哈密瓜', '芒果', '香蕉']
+        fruits.pop()
+        console.log(fruits);
+
+        fruits.push('水蜜桃')
+        fruits.push('火龙果', '八月瓜')
+        console.log(fruits)
+
+        const sparseArr = [, 2, , 3]
+        /* concat会保留稀疏性 */
+        const newArr = sparseArr.concat([1, 2])
+        console.log(newArr)
+        /* 将稀疏数组扩展会导致empty变成undefined */
+        console.log([...newArr])
+
+        const num1 = [[1]]
+        const num2 = [2, [3]]
+        const numbers = num1.concat(num2)
+        console.log(numbers) // [[1], 2, [3]]
+        num1[0].push(4)
+        console.log(numbers) // [[1,4], 2, [3]]
+
+        const obj1 = { 0: 1, 1: 2, 2: 3, length: 3 }
+        /* 分别通过obj1[0]和obj1.length两种方式访问,类数组对象通过索引访问元素,直接作为concat参数传入,不会被视作数组,而是原样传入 */
+        /* 在对象里面设置配置属性 */
+        const obj2 = { 0: 1, 1: 2, 2: 3, length: 3, [Symbol.isConcatSpreadable]: true }
+        console.log([0].concat(obj1, obj2))
+        // [ 0, { '0': 1, '1': 2, '2': 3, length: 3 }, 1, 2, 3 ]
+        // [[1, 4], 2, [3]]
+
+        console.log(Array.prototype.concat.call({}, 1, 2, 3)); // [{}, 1, 2, 3]
+        console.log(Array.prototype.concat.call(1, 2, 3)); // [ [Number: 1], 2, 3 ]
+        const arrayLike = { [Symbol.isConcatSpreadable]: true, length: 2, 0: 1, 1: 2 };
+        console.log(Array.prototype.concat.call(arrayLike, 3, 4)); // [1, 2, 3, 4]
+
+
+    </script>
+</body>
+
+</html>

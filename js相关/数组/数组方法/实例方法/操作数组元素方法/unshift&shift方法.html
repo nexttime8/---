@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* unshift方法--可以和shift\push方法比较
+        可以有0-n个参数传入,0个相当于获取数组长度,n个则按照参数顺序照搬到数组开头(不会逆序)
+        直接在原数组上修改,传入参数可以是任何类型,可以是数组
+        返回数组新长度
+        对类数组对象操作?同push\pop方法,只期望 this 值具有 length 属性和整数键属性
+        */
+        let fruits = ['西瓜', '葡萄', '哈密瓜', '芒果', '香蕉']
+        fruits.unshift('樱桃')
+        console.log(fruits);
+
+        /* 注意这两种类型length的区别!!后者会自动添加length属性,但是不算做一个length指定的元素 */
+        let arrayLike = {
+            length: 3, /* 这里如果写成2,会变成{'0': 1, '1': 2, length: 4, unrelated: 'foo'},丢失元素! */
+            unrelated: "foo",
+            2: 4,
+        };
+        Array.prototype.unshift.call(arrayLike, 1, 2); /* 因为是插入到开头,所以从'0'开始! */
+        console.log(arrayLike);
+        // { '0': 1, '1': 2, '4': 4, length: 5, unrelated: 'foo' }
+        const plainObj = {};
+        // 这里没有长度属性，所以这里的长的为 0
+        Array.prototype.unshift.call(plainObj, 1, 2);
+        console.log(plainObj);
+        // { '0': 1, '1': 2, length: 2 }
+
+        /* shift方法
+        直接对原数组修改
+        返回值:是数组第一个元素,也就是被删除的元素||undefined
+        */
+        fruits = ['西瓜', '葡萄', '哈密瓜', '芒果', '香蕉']
+        fruits.shift()
+        console.log(fruits);
+
+        arrayLike = {
+            '0': 1, '1': 2, length: 5, unrelated: 'foo', '4': 4
+        };
+        Array.prototype.shift.call(arrayLike)
+        console.log(arrayLike)
+
+
+    </script>
+</body>
+
+</html>

@@ -138,7 +138,8 @@
 
         }
 
-        /* 原生promise */
+        /* 原生promise,测试链式调用 */
+        // #region
         const p3 = new Promise((resolve, reject) => {
             resolve(1)
         })
@@ -159,8 +160,10 @@
             .then(res => {
                 console.log(res)
             })
+        // #endregion
 
-        /* 实现队列+状态+链式then后的promise */
+        /* 实现队列+状态+链式then后的promise,测试链式调用 */
+        // #region 
         const p4 = new MyApPromise((resolve, reject) => {
             resolve(1)
         })
@@ -181,6 +184,7 @@
             .then(res => {
                 console.log(res)
             })
+        // #endregion
 
     </script>
 </body>

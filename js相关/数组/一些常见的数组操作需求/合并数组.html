@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* push方法+展开运算符 */
+        let vegetables = ["parsnip", "potato"];
+        let moreVegs = ["celery", "beetroot"];
+        vegetables.push(...moreVegs);
+        console.log(vegetables);
+
+        /* concat方法 */
+        vegetables = ["parsnip", "potato"];
+        moreVegs = ["celery", "beetroot"];
+        console.log(vegetables.concat(moreVegs))
+    </script>
+</body>
+
+</html>

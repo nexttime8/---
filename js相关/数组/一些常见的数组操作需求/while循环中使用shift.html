@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 不是很懂 意义何在? 原数组已经被清空了
+        shift() 方法经常用于 while 循环的条件中，作为一种逐步处理数组元素并在处理完所有元素后自动结束循环的方式。 
+        优点是:使得 while 循环可以在不需要手动维护索引或者检查数组长度的情况下，遍历整个数组
+        */
+        const names = ["Andrew", "Tyrone", "Paul", "Maria", "Gayatri"];
+        while (typeof (i = names.shift()) !== "undefined") {
+            console.log(i);
+        }
+        // Andrew, Tyrone, Paul, Maria, Gayatri
+        console.log(names)
+
+    </script>
+</body>
+
+</html>

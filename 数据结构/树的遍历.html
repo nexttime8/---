@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 栈深度优先遍历一个对象数组 */
+        function traverse(obj) {
+            const stack = [obj]
+
+            while (stack.length > 0) {
+                const node = stack.pop()
+
+                if (Array.isArray(node)) {
+                    for (let i = node.length - 1; i >= 0; i--) {
+                        stack.push(node[i])
+                    }
+                } else if (typeof node === "object" && node !== null) {
+                    for (let key in node) {
+                        if (node.hasOwnProperty(key)) {
+                            stack.push(node[key])
+                        }
+                    }
+                } else {
+                    console.log(node)
+                }
+            }
+        }
+
+        // 测试
+        const obj = [
+            {
+                a: [1, 2, 3],
+                b: 4,
+            },
+            {
+                c: [5, 6],
+                d: [
+                    {
+                        e: 7,
+                        f: 8,
+                    },
+                    9,
+                ],
+            },
+        ]
+        traverse(obj)
+
+        /* 队列广度优先遍历一个对象数组 */
+        function traverseBFS(root) {
+            let queue = []; // 创建一个队列
+            queue.push(root); // 将根节点加入队列
+
+            while (queue.length) { // 只要队列中有元素就继续执行循环
+                let node = queue.shift(); // 取出队列的第一个元素
+                console.log(node.value); // 访问该元素
+
+                if (node.children) { // 如果元素有子节点
+                    for (let child of node.children) { // 将所有子节点添加到队列
+                        queue.push(child);
+                    }
+                }
+            }
+        }
+        const tree = {
+            value: 11,
+            children: [
+                {
+                    value: 22,
+                    children: [
+                        {
+                            value: 33,
+                            children: [
+                                {
+                                    value: 44
+                                }
+                            ]
+                        },
+                        {
+                            value: 55,
+                            children: [
+                                {
+                                    value: 66,
+                                    children: [
+                                        {
+                                            value: 77,
+                                            children: [
+                                                {
+                                                    value: 88
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            value: 99,
+                                            children: [
+                                                {
+                                                    value: 10
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    value: 89,
+                    children: [
+                        {
+                            value: 23
+                        }
+                    ]
+                }
+            ]
+        }
+        traverseBFS(tree)
+        /* 当你遍历大型数据结构时，应注意避免栈溢出（在递归深度优先搜索中）或内存耗尽（在广度优先搜索中，当队列变得非常大时） */
+
+        /* 迭代深度优先遍历,不是使用递归,递归可能导致栈溢出,使用栈数据结构来追踪需要访问的节点 */
+        function traverseDFSIterative(root) {
+            let stack = [];
+            stack.push(root);
+
+            while (stack.length) {
+                let node = stack.pop();
+                console.log(node.value);
+
+                if (node.children) {
+                    for (let child of node.children) {
+                        stack.push(child);
+                    }
+                }
+            }
+        }
+
+        /* 使用生成器函数的深度优先搜索 */
+        function* traverseDFSGenerator(node) {
+            if (node) {
+                yield node.value;
+
+                if (node.children) {
+                    for (let child of node.children) {
+                        yield* traverseDFSGenerator(child);
+                    }
+                }
+            }
+        }
+        let iterator = traverseDFSGenerator(root);
+        for (let value of iterator) {
+            console.log(value);
+        }
+
+    </script>
+</body>
+
+</html>
