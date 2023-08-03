@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>super关键字</title>
+</head>
+
+<body>
+    <script>
+        /* 用于在子类中调用父类的方法或构造函数。在类的构造函数和方法中，super 关键字可以被用来调用父类上同名的方法。在类的构造函数中，你必须在使用 this 关键字之前先调用 super。 */
+        class Parent {
+            constructor() {
+                this.name = 'parent';
+            }
+
+            sayHello() {
+                console.log(`Hello, I am ${this.name}`);
+            }
+        }
+
+        class Child extends Parent {
+            constructor() {
+                super();  /* 通过extends继承的时候必须在构造函数最前面调用super */
+                this.name = 'child';
+            }
+
+            sayHello() {
+                super.sayHello();  /* 通过super.来调用父类的 sayHello 方法 */
+            }
+        }
+
+        let child = new Child();
+        child.sayHello();  // 输出 "Hello, I am child"
+
+        /* 最终原型之间的关系如下
+        Child.prototype => Parent
+        child.__proto__ => Pranet
+        用class定义的类,想要获取constructor和里面的函数,要通过Parent.prototype来获取
+        直接Parent是js文本格式
+        */
+
+    </script>
+</body>
+
+</html>
