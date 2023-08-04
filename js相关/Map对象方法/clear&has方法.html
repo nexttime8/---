@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* clear
+        返回值undefined
+        */
+        const myMap = new Map();
+        myMap.set("bar", "baz");
+        myMap.set(1, "foo");
+        console.log(myMap.size); // 2
+        console.log(myMap.has("bar")); // true
+        myMap.clear();
+        console.log(myMap.size); // 0
+        console.log(myMap.has("bar")); // false
+
+        /* has
+        返回值boolean
+        */
+        const myMap2 = new Map();
+        myMap2.set("bar", "foo");
+        console.log(myMap2.has("bar")); // true
+        console.log(myMap2.has("baz")); // false
+
+    </script>
+</body>
+
+</html>

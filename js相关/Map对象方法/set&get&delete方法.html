@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map对象方法</title>
+</head>
+
+<body>
+    <script>
+        /* -------------------------------------------------------------- */
+        const contacts = new Map();
+        /* set方法返回值就是这个Map(完整) */
+        contacts.set("Jessie", { phone: "213-555-1234", address: "123 N 1st Ave" });
+        contacts.has("Jessie"); // true
+        /* 不存在的元素,通过get获取返回undefined */
+        contacts.get("Hilary"); // undefined
+        contacts.set("Hilary", { phone: "617-555-4321", address: "321 S 2nd St" });
+        /* 存在的元素,通过get获取返回那个元素值(set时的第二个参数部分) */
+        contacts.get("Jessie"); // {phone: "213-555-1234", address: "123 N 1st Ave"}
+        /* 不存在的元素,通过delete删除返回false */
+        contacts.delete("Raymond"); // false
+        /* 存在的元素,通过delete删除返回true */
+        contacts.delete("Jessie"); // true
+        console.log(contacts.size); // 1
+
+        /* -------------------------------------------------------------- */
+        /* 使用 Map 对象,键的多样性之对象\函数 */
+        const myMap = new Map();
+        /* 键可以是字符串\空对象\空匿名函数 */
+        const keyString = "a string";
+        const keyObj = {};
+        const keyFunc = function () { };
+        // 添加键
+        myMap.set(keyString, "和键'a string'关联的值");
+        myMap.set(keyObj, "和键 keyObj 关联的值");
+        myMap.set(keyFunc, "和键 keyFunc 关联的值");
+        console.log(myMap.size); // 3
+        // 读取值
+        console.log(myMap.get(keyString)); // "和键'a string'关联的值"
+        console.log(myMap.get(keyObj)); // "和键 keyObj 关联的值"
+        console.log(myMap.get(keyFunc)); // "和键 keyFunc 关联的值"
+        /* 基本数据类型,只要值相等,都能get到;引用数据类型,值相等,但是引用地址不相等, 无法获取到(对象\函数等) */
+        console.log(myMap.get("a string")); // "和键'a string'关联的值"，因为 keyString === 'a string'
+        console.log(myMap.get({})); // undefined，因为 keyObj !== {}
+        console.log(myMap.get(function () { })); // undefined，因为 keyFunc !== function () {}
+
+        /* -------------------------------------------------------------- */
+        /* 使用 Map 对象,键的多样性之NaN(默认所有的NaN都相等,其实所有的NaN不相等) */
+        const myMap2 = new Map();
+        myMap2.set(NaN, "not a number");
+        myMap2.get(NaN); // "not a number"
+        const otherNaN = Number("foo");
+        myMap2.get(otherNaN); // "not a number"
+
+        /* -------------------------------------------------------------- */
+        /* Map和数组相互转换 */
+        const kvArray = [
+            ["key1", "value1"],
+            ["key2", "value2"],
+        ];
+        // 使用常规的 Map 构造函数可以将一个[二维键值对数组]转换成一个 Map 对象
+        /* new Map()将n*2数组作为参数传入 */
+        const MyMap2 = new Map(kvArray);
+        console.log(MyMap2.get("key1")); // "value1"
+        // 使用 Array.from 函数可以将一个 Map 对象转换成一个二维键值对数组
+        /* Array.from()将Map对象作为参数传入 */
+        console.log(Array.from(MyMap2)); // 输出和 kvArray 相同的数组
+        // 更简洁的方法来做如上同样的事情，使用展开运算符
+        /* 展开运算符直接将Map对象转换成二维键值对数组 */
+        console.log([...MyMap2]);
+        // 或者在键或者值的迭代器上使用 Array.from，进而得到只含有键或者值的数组
+        console.log(Array.from(MyMap2.keys())); // 输出 ["key1", "key2"]
+        console.log(Array.from(MyMap2.values())); // 输出 ["value1", "value2"]
+
+        /* -------------------------------------------------------------- */
+        /* 复制与合并Map */
+        /* 复制 */
+        const original = new Map([[1, "one"]]); /* 1*2数组作为参数传入 */
+        const clone = new Map(original); /* 直接将另一个Map对象,作为new Map()的参数传入 */
+        console.log(clone.get(1)); // one
+        console.log(original === clone); // false. 浅比较 不为同一个对象的引用
+        /* 合并 1 Map对象之间合并 */
+        const first = new Map([ /* 3*2数组传入 */
+            [1, "one"],
+            [2, "two"],
+            [3, "three"],
+        ]);
+        const second = new Map([ /* 2*2数组传入 */
+            [1, "uno"],
+            [2, "dos"],
+        ]);
+        /* [...first, ...second]这里是5个array,经过new Map()才会将键合并 */
+        const merged = new Map([...first, ...second]); /* 键相同,后面的值覆盖前面的值 */
+        console.log(merged.get(1)); // uno /* 这是后面的值 */
+        console.log(merged.get(2)); // dos /* 这是后面的值 */
+        console.log(merged.get(3)); // three /* 这是前面的值,因为后面没有相同键将其覆盖 */
+        /* 合并 2 Map对象和数组合并 */
+        const afirst = new Map([
+            [1, "one"],
+            [2, "two"],
+            [3, "three"],
+        ]);
+        const asecond = new Map([
+            [1, "uno"],
+            [2, "dos"],
+        ]);
+        const amerged = new Map([...afirst, ...asecond, [1, "eins"]]);
+        console.log(amerged.get(1)); // eins
+        console.log(amerged.get(2)); // dos
+        console.log(amerged.get(3)); // three
+
+
+
+    </script>
+</body>
+
+</html>
