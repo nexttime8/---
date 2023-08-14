@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建数组的方法</title>
+</head>
+
+<body>
+    <script>
+        /* 
+        ES8里面新的UintArray
+        1. 定义：Uint32Array 表示一个由基于平台字节序的 32 位无符号字节组成的数组
+        2. 初始值：数组中每个元素的初始值都是0
+        3. 用法：一旦创建，你可以[用对象的方法引用]数组里的元素，或者使用标准的数组索引语法（即，使用中括号）
+        4. 参数：
+            无参数
+            length参数
+            typedArray参数
+            object参数
+            buffer [, byteOffset [, length]]参数
+            表示给定一个ArrayBuffer对象，给定Uint32Array的起始下标（4的倍数），给定长度（要与buffer一致）
+        5. 属性
+            1. BYTES_PER_ELEMENT 是4
+            2. length
+            3. prototype 是TypedArray
+        */
+
+        // 给定长度
+        var uint32 = new Uint32Array(2);
+        uint32[0] = 42;
+        console.log(uint32[0]); // 42
+        console.log(uint32.length); // 2
+        console.log(uint32.BYTES_PER_ELEMENT); // 4
+
+        // 给定数组
+        var arr = new Uint32Array([21, 31]);
+        console.log(arr[1]); // 31
+
+        // 给定 TypedArray
+        var x = new Uint32Array([21, 31]);
+        var y = new Uint32Array(x);
+        console.log(y[0]); // 21
+
+        // 给定 ArrayBuffer
+        var buffer = new ArrayBuffer(16);
+        var z = new Uint32Array(buffer, 0, 4);
+
+        // 给定可迭代对象
+        var iterable = (function* () {
+            yield* [1, 2, 3];
+        })();
+        var uint32 = new Uint32Array(iterable);
+        // Uint32Array[1, 2, 3]
+
+
+        var uniquePathsWithObstacles = function (obstacleGrid) {
+            if (obstacleGrid[0][0]) return 0
+            let m = obstacleGrid.length
+            let n = obstacleGrid[0].length
+            // let dp = Array(m)
+            // dp.forEach(item => item.map(i => Array(n)))
+            // let dp = Array.from({ length: m }, el => new Array(n))
+            let dp = Array.from({ length: m }, el => new Uint32Array(n))
+            dp[0][0] = 1
+            for (let i = 0; i < m; i++) {
+                for (let j = 0; j < n; j++) {
+                    if (obstacleGrid[i][j] || (!i && !j)) continue
+                    dp[i][j] = (i ? dp[i - 1][j] : 0) + (j ? dp[i][j - 1] : 0)
+                }
+            }
+            return dp[m - 1][n - 1]
+        }
+    </script>
+</body>
+
+</html>

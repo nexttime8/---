@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var maxProfit = function (prices) {
+            let len = prices.length
+            let dp = Array(len).fill([0, 0])
+            dp[0] = [-prices[0], 0]
+            for (let i = 1; i < len; i++) {
+                dp[i] = [
+                    Math.max(dp[i - 1][0], -prices[i]),
+                    Math.max(dp[i - 1][1], prices[i] + dp[i - 1][0])
+                ]
+            }
+            console.log(dp)
+            return dp[len - 1][1]
+        }
+        maxProfit([7, 1, 5, 3, 6, 4])
+
+        console.log([1, 2, 3].fill(4)); // [4, 4, 4]
+        console.log([1, 2, 3].fill(4, 1)); // [1, 4, 4]从索引1开始
+        console.log([1, 2, 3].fill(4, 1, 2)); // [1, 4, 3]从索引1开始，2结束，左闭右开
+        console.log([1, 2, 3].fill(4, 1, 1)); // [1, 2, 3]从索引1开始，1结束，左闭右开，选不中
+        console.log([1, 2, 3].fill(4, 3, 3)); // [1, 2, 3]
+        console.log([1, 2, 3].fill(4, -3, -2)); // [4, 2, 3]
+        console.log([1, 2, 3].fill(4, NaN, NaN)); // [1, 2, 3]为NaN，选不中
+        console.log([1, 2, 3].fill(4, 3, 5)); // [1, 2, 3]超出下标，选不中
+        console.log(Array(3).fill(4)); // [4, 4, 4]
+        // 不合理的数字，都不影响fill
+
+        // 一个简单的对象，被数组的每个空槽所引用
+        const arr = Array(3).fill({}); // [{}, {}, {}]
+        arr[0].hi = "hi"; // [{ hi: "hi" }, { hi: "hi" }, { hi: "hi" }]
+
+        const arr = new Array(3);
+        for (let i = 0; i < arr.length; i++) {
+            arr[i] = new Array(4).fill(1); // 创建一个大小为 4 的数组，填充全 1
+        }
+        arr[0][0] = 10;
+        console.log(arr[0][0]); // 10
+        console.log(arr[1][0]); // 1
+        console.log(arr[2][0]); // 1
+
+        const tempGirls = Array(5).fill("girl", 0); // ["girl","girl","girl","girl","girl"]
+
+        // 非数组上调用fill函数，通过Array.prototype.fill，并call改变this
+        const arrayLike = { length: 2 };
+        console.log(Array.prototype.fill.call(arrayLike, 1));
+// { '0': 1, '1': 1, length: 2 }
+
+
+
+
+
+    </script>
+</body>
+
+</html>

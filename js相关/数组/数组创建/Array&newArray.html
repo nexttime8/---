@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // ————————————————————创建数组可以有4种方法：字面量，Array方法（可以没有new），from方法，of方法
+        // ———————————————————— 字面量
+        const arr1 = [1, 2, 3, 4, 5];
+
+        // ———————————————————— new Array()
+        console.log(new Array(1, 2)) // [1, 2] 只要是传入两个以上元素，就直接是数组元素了
+        console.log(new Array(3)) // 长度为3，但是各元素undefined，[empty,empty,empty]
+        console.log(new Array("3")) // ["3"]
+        console.log(new Array(5).fill(0)); // 创建长度为5且填充为0的数组 [0, 0, 0, 0, 0]
+
+        
+
+
+
+        // ———————————————————— Array.of()
+        // 是一个“工厂方法”
+        // 和上面不同，这里直接以一个个元素传入
+        const d = 'a'
+        console.log(Array.of(1, 2, d, 4, 5)); // 创建包含传入参数的数组 [1, 2, 3, 4, 5]
+        function NotArray(len) {
+            console.log("NotArray called with length", len);
+        }
+        console.log(Array.of.call(NotArray, 1, 2, 3));
+        console.log(Array.of.call(NotArray, [1, 2, 3]));
+        // NotArray called with length 3
+        // NotArray { '0': 1, '1': 2, '2': 3, length: 3 }
+        // NotArray {0: [1, 2, 3], length: 1}
+        console.log(Array.of.call(Object)); // [Number: 0] { length: 0 }
+
+
+        const arr7 = [a, b, c] = [1, 2, 3]; // 创建数组并同时解构赋值 [a, b, c] = [1, 2, 3]
+
+    </script>
+</body>
+
+</html>
