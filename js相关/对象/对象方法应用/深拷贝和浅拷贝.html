@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+        在JavaScript中，数据类型分为基本数据类型和引用数据类型。基本数据类型包括：Number、String、Boolean、Undefined、Null、Symbol 和 BigInt。引用数据类型主要指的是对象，包括普通对象、数组、函数等。
+        浅拷贝是指拷贝对象时，对于对象中的基本数据类型的值，直接拷贝其值；对于引用数据类型的值，则拷贝其地址引用，而不是真正的拷贝一份到新的对象中。
+        深拷贝则是对于对象的所有层次的属性（无论是基本数据类型还是引用数据类型），都进行真正的拷贝，创建了新的地址来存放新对象的数据。
+        */
+
+        /* 浅拷贝
+        1. Object.assign()
+        2. 数组的slice()和concat()方法（不带参数时）
+        */
+        const obj1 = { a: 1, b: { c: 2 } };
+        const obj2 = Object.assign({}, obj1);
+        obj2.b.c = 3;
+        console.log(obj1.b.c); // 输出3，说明obj2.b和obj1.b指向的是同一个对象
+
+        /* 深拷贝
+        1.JSON（有局限性，不能拷贝函数、undefined、Symbol、循环引用等）
+        2.递归
+        */
+        const obj1j = { a: 1, b: { c: 2 } };
+        const obj2j = JSON.parse(JSON.stringify(obj1j));
+        obj2j.b.c = 3;
+        console.log(obj1j.b.c); // 输出2，说明obj2和obj1是完全独立的
+
+        // 仍然不能处理循环引用和特殊对象（例如，Date对象、RegExp对象）。实现一个完美的深拷贝方法需要考虑更多的边界条件和特殊情况
+        function deepClone(obj) {
+            if (obj === null) return null;
+            if (typeof obj !== 'object') return obj;
+            if (Array.isArray(obj)) {
+                const newArr = [];
+                for (let i = 0; i < obj.length; i++) {
+                    newArr[i] = deepClone(obj[i]);
+                }
+                return newArr;
+            }
+            const newObj = {};
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    newObj[key] = deepClone(obj[key]);
+                }
+            }
+            return newObj;
+        }
+        const obj1d = { a: 1, b: { c: 2 } };
+        const obj2d = deepClone(obj1);
+
+
+    </script>
+</body>
+
+</html>

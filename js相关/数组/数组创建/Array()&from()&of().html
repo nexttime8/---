@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 
+        map方法的回调函数callbackFn 仅在已分配值的数组索引处被调用。它不会在稀疏数组中的空槽处被调用。（空槽指的是empty）
+        map方法会返回一个新数组
+         */
+        let arr1 = Array(4).map(() => Array(4).fill(0))
+        let arr2 = Array.from({ length: 4 }).map(() => Array(4).fill(0))
+
+    </script>
+</body>
+
+</html>

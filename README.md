@@ -7,4 +7,9 @@
 
 ## 还不熟练
 
+1. ajax
+2. generator函数
+3. 正则表达式
+4. 
+
 ### generator函数

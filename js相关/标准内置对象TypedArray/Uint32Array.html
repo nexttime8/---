@@ -61,8 +61,8 @@
             let n = obstacleGrid[0].length
             // let dp = Array(m)
             // dp.forEach(item => item.map(i => Array(n)))
-            // let dp = Array.from({ length: m }, el => new Array(n))
-            let dp = Array.from({ length: m }, el => new Uint32Array(n))
+            let dp = Array.from({ length: m }, el => new Array(n))
+            // let dp = Array.from({ length: m }, el => new Uint32Array(n))
             dp[0][0] = 1
             for (let i = 0; i < m; i++) {
                 for (let j = 0; j < n; j++) {

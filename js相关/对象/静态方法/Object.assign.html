@@ -9,16 +9,47 @@
 
 <body>
     <script>
+        /* Object.assign()静态方法将一个或者多个源对象中所有可枚举的自有属性复制到目标对象，并返回修改后的目标对象。 */
+
+        /* 
+        Object.assign() 方法只会拷贝源对象[可枚举的的自有属性]到目标对象。该方法在源对象上使用 [[Get]]，在目标对象上使用 [[Set]]，因此它会调用 getter 和 setter。故它对属性进行赋值，而不仅仅是复制或定义新的属性。如果合并源对象包含 getter 的新属性到原型中，则可能不适合使用此方法。字符串和 Symbol 类型属性都会被复制。
+        */
+
         const target = { a: 1, b: 2 };
         const source = { b: 4, c: 5 };
-
         const returnedTarget = Object.assign(target, source);
-
         console.log(target);
         // Expected output: Object { a: 1, b: 4, c: 5 }
-
         console.log(returnedTarget === target);
-// Expected output: true
+
+        // 复制对象
+        const obj = { a: 1 };
+        const copy = Object.assign({}, obj);
+        console.log(copy); // { a: 1 }// Expected output: true
+
+        // 只能复制属性值，不能深拷贝
+
+        const obj1 = { a: 0, b: { c: 0 } };
+        const obj2 = Object.assign({}, obj1);
+        console.log(obj2); // { a: 0, b: { c: 0 } }
+        obj1.a = 1;
+        console.log(obj1); // { a: 1, b: { c: 0 } }
+        console.log(obj2); // { a: 0, b: { c: 0 } }
+        obj2.a = 2;
+        console.log(obj1); // { a: 1, b: { c: 0 } }
+        console.log(obj2); // { a: 2, b: { c: 0 } }
+        obj2.b.c = 3;
+        console.log(obj1); // { a: 1, b: { c: 3 } }
+        console.log(obj2); // { a: 2, b: { c: 3 } }
+        // 深拷贝
+        const obj3 = { a: 0, b: { c: 0 } };
+        const obj4 = JSON.parse(JSON.stringify(obj3));
+        obj3.a = 4;
+        obj3.b.c = 4;
+        console.log(obj4); // { a: 0, b: { c: 0 } }
+
+        
+
     </script>
 </body>
 

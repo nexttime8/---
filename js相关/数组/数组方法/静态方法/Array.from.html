@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // ———————————————————— Array.from() 很多例子：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/from
+        // Array.from() 静态方法从可迭代或类数组对象创建一个新的浅拷贝的数组实例。
+        // Array.from() 绝不会创建稀疏数组（不会有empty）。如果 arrayLike 对象缺少一些索引属性，那么这些属性在新数组中将是 undefined。
+        /* mdn */
+        Array.from("foo");// [ "f", "o", "o" ]
+
+        const set = new Set(["foo", "bar", "baz", "foo"]);
+        Array.from(set);// [ "foo", "bar", "baz" ]
+
+        const map = new Map([
+            [1, 2],
+            [2, 4],
+            [4, 8],
+        ]);
+        Array.from(map);// [[1, 2], [2, 4], [4, 8]]
+        const mapper = new Map([
+            ["1", "a"],
+            ["2", "b"],
+        ]);
+        Array.from(mapper.values());// ['a', 'b'];
+        Array.from(mapper.keys());// ['1', '2'];
+
+        // 根据 DOM 元素的属性创建一个数组
+        const images = document.querySelectorAll("img");
+        const sources = Array.from(images, (image) => image.src);
+        const insecureSources = sources.filter((link) => link.startsWith("http://"));
+        const secureSources = sources.filter((link) => link.startsWith("https://"));
+
+        function f() {
+            return Array.from(arguments); // arguments会将传入的参数作为一个类数组
+        }
+        f(1, 2, 3);// [ 1, 2, 3 ]
+
+        // 使用箭头函数作为映射函数去操作多个元素
+        Array.from([1, 2, 3], (x) => x + x);// [2, 4, 6]
+        // 生成一个数字序列。因为数组在每个位置都使用 `undefined` 初始化，下面的 `v` 值将是 `undefined`
+        Array.from({ length: 5 }, (v, i) => i);// [0, 1, 2, 3, 4]
+
+        // 序列生成器函数（通常称为“range”，例如 Clojure、PHP 等）
+        const range4 = (start, stop, step) =>
+            Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step); // 生成的数字范围 0..4
+        range4(0, 4, 1);// [0, 1, 2, 3, 4]
+        // 生成的数字范围 1..10，步长为 2
+        range4(1, 10, 2);// [1, 3, 5, 7, 9]
+        // 使用 Array.from 生成字母表，并将其序列排序
+        // charCodeAt()为什么要把0传进去？
+        range4("A".charCodeAt(0), "Z".charCodeAt(0), 1).map((x) =>
+            String.fromCharCode(x),
+        );// ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+
+        /* **************call方法的构造函数！？？？ */
+        function NotArray(len) { // 被当作构造函数
+            // 构造函数内部的 this 会引用新创建的对象，而 len 参数则是你从 call方法第二个参数 中获得的长度
+            console.log("NotArray called with length", len);
+        }
+        /* 这种用法是为了控制Array.from方法的输出
+        通常，Array.from会产生一个标准的数组，但是如果您想要的不是标准的数组
+        而是某种自定义对象，那么您可以使用 .call 方法来更改 Array.from 的行为
+        */
+        // 可迭代对象
+        console.log(Array.from.call(NotArray, new Set(["foo", "bar", "baz"])));
+        // NotArray called with length undefined
+        // NotArray { '0': 'foo', '1': 'bar', '2': 'baz', length: 3 }
+        // 类数组对象
+        console.log(Array.from.call(NotArray, { length: 1, 0: "foo" }));
+        // NotArray called with length 1
+        // NotArray { '0': 'foo', length: 1 }
+        // 当 this 值不是构造函数，返回一个普通的数组对象。
+        console.log(Array.from.call({}, { length: 1, 0: "foo" })); // [ 'foo' ]
+        // 这里的{}也可以是""，也可以是[]
+        // Array.from({length:1,0:"foo"})两个的作用一样，为什么要call？
+
+        /* 为什么call的第一个参数是构造函数？ */
+
+        /*
+        使用 Array.from.call(NotArray, someObject) 是为了展示一种高级的技巧，即控制 Array.from 的行为，使其返回一个非标准的数组对象。
+        Array.from 函数的内部逻辑包括两个主要部分：
+            根据传入对象的长度创建一个新对象（通常是一个数组）
+            填充该对象的元素
+        1. 当你使用 Array.from.call(NotArray, someObject) 时，你实际上是在改变第一部分的行为。
+        2. Array.from 的默认行为是创建一个标准数组，但当你使用 .call 并传递一个构造函数作为第一个参数时，你告诉 Array.from 使用这个构造函数来创建新的对象，而不是创建一个标准数组。
+        3. 当 Array.from 需要创建一个新对象时，它【实际上是通过 new NotArray(len) 的形式来完成的。这是为什么 NotArray 的内部会接收到长度参数】，而且您会看到在控制台上的输出消息。
+        */
+
+        /*
+        当你使用 new 关键字调用函数时，函数就会被当作构造函数来使用
+        当一个函数被当做构造函数使用时，他会
+            创建一个新的空对象。
+            将这个新对象设置为函数内部的 this。
+            执行函数的内部代码（就像正常调用函数一样）。
+            如果函数没有返回其它对象，则返回这个新创建的对象。
+        */
+
+        /*
+        首先，当我们使用Array.from方法时，该方法的内部逻辑是这样的
+            先判断提供的对象是否有.length属性并获取该属性值。
+            创建一个长度为.length属性值的新数组。
+            逐个复制对象的属性到新数组。
+        Array.from.call(NotArray, { length: 1, 0: "foo" })
+        Array.from内部会这样做：
+            检查对象{ length: 1, 0: "foo" }的.length属性，它的值是1。
+            使用new关键字调用NotArray，并将.length属性值传递给它，这就是NotArray为什么接收到一个长度参数。
+            将对象{ length: 1, 0: "foo" }的属性逐个复制到由NotArray创建的新对象中。
+        */
+
+        /* Array.from的特定场景中，Array.from期望它的this值是一个[构造函数]，它用来构建返回的对象 */
+
+        /* 当我们改变Array.from的this值时，我们实际上是在更改它用来创建返回对象的构造函数。 */
+
+    </script>
+</body>
+
+</html>

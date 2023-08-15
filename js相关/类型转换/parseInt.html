@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* parseInt
+        parseInt(string, radix) 解析一个字符串并返回[指定基数]的十进制整数，radix 是 2-36 之间的整数，表示被解析字符串的基数。[基数就是进制数]
+        返回一个十进制整数或者NaN
+        如果 parseInt 遇到的字符不是指定 radix 参数中的数字，它将忽略该字符以及所有后续字符，并返回到该点为止已解析的整数值。parseInt 将数字截断为整数值。允许前导和尾随空格。
+        parseInt不应替代 Math.floor()，parseInt会在数字很大或很小的时候，因为截断数字而产生意外结果Math.floor('2e30') 为2e+30，parseInt('2e30')为2
+        parseInt 可以理解两个符号。+ 表示正数，- 表示负数
+        在使用 parseInt 时，一定要指定一个 radix；因为string以0开头，可能认为是八进制，也可能认为是十进制，ES6认为应该是十进制，但是并非所有浏览器都支持。chrome中parseInt('010',8)为8，parseInt('010')为10
+        */
+        console.log(parseInt('123'));// 123 (default base-10)
+        console.log(parseInt('123', 10));// 123 (explicitly specify base-10)
+        console.log(parseInt('   123 '));// 123 (whitespace is ignored)
+        console.log(parseInt('077'));// 77 (leading zeros are ignored)
+        console.log(parseInt('1.9'));// 1 (decimal part is truncated)
+        console.log(parseInt('ff', 16));// 255 (lower-case hexadecimal)
+        console.log(parseInt('0xFF', 16));// 255 (upper-case hexadecimal with "0x" prefix)，将0xFF看作十六进制数，并按照十进制数返回
+        console.log(parseInt('xyz'));// NaN (input can't be converted to an integer)
+
+        parseInt("0xF", 16); // 15
+        parseInt("F", 16); // 15
+        parseInt("17", 8); // 15
+        parseInt(021, 8); // 15编译报错Octal literals are not allowed. Use the syntax '0o21' 
+        parseInt("015", 10); //15 
+        parseInt("015", 8); //13 
+        parseInt(015, 8); // 11，为什么chrome和safari都显示11？？？？而不是13(5+8)？？？理应返回13，而且011，010，019的8进制返回的都是NaN’
+        // ECMAScript 5 规范不再允许 parseInt 函数的实现环境把以 0 字符开始的字符串作为八进制数值
+        parseInt(15.99, 10); // 15
+        parseInt("15,123", 10); // 15
+        parseInt("FXX123", 16); // 15
+        parseInt("1111", 2); // 15
+        parseInt("15 * 3", 10); // 15
+        parseInt("15e2", 10); // 15
+        parseInt(15e2, 10); // 1500
+        parseInt("15px", 10); // 15
+        parseInt("12", 13); // 15
+
+        parseInt("Hello", 8); // 根本就不是数值
+        parseInt("546", 2); // 除了“0、1”外，其他数字都不是有效二进制数字
+
+        parseInt("-F", 16); // -15
+        parseInt("-0F", 16); // -15
+        parseInt("-0XF", 16); // -15
+        parseInt(-15.1, 10); // -15
+        parseInt(" -17", 8); // -15
+        parseInt(" -15", 10); // -15
+        parseInt("-1111", 2); // -15
+        parseInt("-15e1", 10); // -15
+        parseInt("-12", 13); // -15
+
+        parseInt(4.7, 10);
+        parseInt(4.7 * 1e22, 10); // 非常大的数值变成 4
+        parseInt(0.00000000000434, 10); // 非常小的数值变成 4
+        parseInt(15e2, 10); // 不是非常大的数值，正常1500
+
+        parseInt("0e0", 16); // 224=14*16
+
+        parseInt("0e0");// 0
+        parseInt("08");// 0, '8' 不是八进制数字。
+
+        parseInt('0x14') // 如果 radix 没有指定或者为 0，参数会被假定以 10 为基数来解析，如果数值以字符对 0x 或 0X 开头，会假定以 16 为基数来解析。
+
+        filterInt = function (value) {
+            if (/^(\-|\+)?([0-9]+|Infinity)$/.test(value)) return Number(value);
+            /* 
+            ^: 匹配字符串的开头。
+            (\-|\+): 匹配 - 或 + 符号。这部分是可选的，因为后面有 ?。
+            ?: 表示前面的字符或组合（在本例中是 (\-|\+)）是可选的，可以出现0次或1次。
+            ([0-9]+|Infinity): 这部分有两种选择：
+                [0-9]+: 匹配1到多个数字。
+                Infinity: 匹配字符串“Infinity”。
+            $: 匹配字符串的结尾。
+            */
+            return NaN;
+        };
+        console.log(filterInt("421")); // 421
+        console.log(filterInt("-421")); // -421
+        console.log(filterInt("+421")); // 421
+        console.log(filterInt("Infinity")); // Infinity
+        console.log(filterInt("421e+0")); // NaN
+        console.log(filterInt("421hop")); // NaN
+        console.log(filterInt("hop1.61803398875")); // NaN
+        console.log(filterInt("1.61803398875")); // NaN
+
+
+
+    </script>
+</body>
+
+</html>

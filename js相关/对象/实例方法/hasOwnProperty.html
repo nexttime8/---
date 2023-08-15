@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+        hasOwnProperty() 方法返回一个布尔值，表示对象自有属性（而不是继承来的属性）中是否具有指定的属性。
+        在支持 Object.hasOwn 的浏览器中，建议使用 Object.hasOwn()，而非 hasOwnProperty()。
+        参数是：要测试的属性的字符串名称或者 Symbol。
+        */
+
+        /* 可以在js中大多数对象中使用这个方法，因为大多数对象都是从object派生而来，继承得到该方法 */
+        const fruits = ["Apple", "Banana", "Watermelon", "Orange"];
+        fruits.hasOwnProperty(3); // 返回 true ('Orange')
+        fruits.hasOwnProperty(4); // 返回 false——未定义
+
+        /* 通过Object.create(null)创建的对象，没有hasOwnProperty方法，传递的不是null，有 */
+
+        /* null和undefined都算有 */
+        const example = {};
+        example.hasOwnProperty("prop"); // 返回 false
+        example.prop = "exists";
+        example.hasOwnProperty("prop"); // 返回 true——“prop”已定义
+        example.prop = null;
+        example.hasOwnProperty("prop"); // 返回 true——自有属性存在且值为 null
+        example.prop = undefined;
+        example.hasOwnProperty("prop"); // 返回 true——自有属性存在且值为 undefined
+
+        /* 空对象是没有__proto__的！
+        hasOwnProperty不会往对象的__proto__身上找
+        */
+        const example1 = {};
+        example1.prop = "exists";
+        // `hasOwnProperty` 仅对直接属性返回 true：
+        example1.hasOwnProperty("prop"); // 返回 true
+        example1.hasOwnProperty("toString"); // 返回 false
+        example1.hasOwnProperty("hasOwnProperty"); // 返回 false
+        // 对于直接或继承的属性，`in` 运算符将返回 true：
+        "prop" in example1; // 返回 true
+        "toString" in example1; // 返回 true
+        "hasOwnProperty" in example1; // 返回 true
+
+
+    </script>
+</body>
+
+</html>
